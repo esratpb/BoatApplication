@@ -1,6 +1,7 @@
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Random;
@@ -11,14 +12,14 @@ public class Rental {
     private LocalDateTime date;
     private Boat boat;
     private Customer customer;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
     private int rentDuration;
     private double totalPrice;
     private boolean paymentIsDone;
     private boolean isReturned;
 
-    public Rental(LocalDateTime date, Boat boat, Customer customer, LocalDateTime startTime, LocalDateTime endTime, int rentDuration, double totalPrice, boolean paymentIsDone, boolean isReturned) {
+    public Rental(LocalDateTime date, Boat boat, Customer customer, LocalTime startTime, LocalTime endTime, int rentDuration, double totalPrice, boolean paymentIsDone, boolean isReturned) {
         this.rentalId = count.nextInt(500);
         this.date = date;
         this.boat = boat;
@@ -66,19 +67,19 @@ public class Rental {
         this.customer = customer;
     }
 
-    public LocalDateTime getStartTime() {
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(LocalTime startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
 

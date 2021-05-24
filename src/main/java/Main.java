@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
@@ -13,10 +14,13 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Model model = new Model();
         Model mainData = new Model();
+        Boat boat2 = new Boat("KAJAK", 2, 30);
 
 //        Employee employee1 = new Employee(1, "user01","123abc");
         Customer customer1 = new Customer("Smith", 6873434, "smith@smith.com", "kazernalaanstraat 101");
         Employee employee2 = new Employee("saif", "abc123");
+        Rental rental1 = new Rental(LocalDateTime.of(2021,05,27, 10,00),boat2,customer1,
+                LocalTime.of(10,00), LocalTime.of(12,00),2,70,true,true);
 
 
         ObjectMapper mapper = new ObjectMapper();
@@ -44,16 +48,18 @@ public class Main {
         }
         Scanner scanner = new Scanner(System.in);
         System.out.println("To see the list of boats press L");
-        System.out.println("To add new Boat to the system press any key \n and then press A");
-        if (scanner.nextLine().equalsIgnoreCase("L")){
+        System.out.println("To add new Boat to the system press A");
+        String input =scanner.nextLine();
+        if (input.equalsIgnoreCase("L")){
                 mainData = mapper.readValue(new File("c:\\Users\\zgoksu\\temp\\model.json"), Model.class);
                 for (Boat boatIn : mainData.boats) {
                     System.out.println(boatIn);
                 }
+                System.out.println("To add new Boat to the system press A");
+                input = scanner.nextLine();
         }
-        System.out.println("To add new Boat to the system press A");
-        String boatAdd = scanner.nextLine();
-        if (boatAdd.equalsIgnoreCase("A")) {
+
+        if (input.equalsIgnoreCase("A")) {
             int chargingTime = 0;
             int boatSeats = 0;
             double keyInput_boatPrice;
@@ -74,12 +80,14 @@ public class Main {
             }
             System.out.println("Please enter boat rent price per hour: ");
             keyInput_boatPrice = scanner.nextInt();
+            scanner.nextLine();
             if (keyInput_boatType.equalsIgnoreCase("ELECTRICALBOAT")){
-               PRICE: if(keyInput_boatPrice >= 35){
-                    keyInput_boatPrice = Double.parseDouble(scanner.next());
-                } else {
-                    System.out.println("The renting price should be minimum 35: ");
-                    keyInput_boatPrice = scanner.nextInt();
+               PRICE: if(keyInput_boatPrice < 35){
+                    while (keyInput_boatPrice < 35){
+                        System.out.println("The renting price should be minimum 35: ");
+                        keyInput_boatPrice = scanner.nextInt();
+                        scanner.nextLine();
+                    }
                 }
             } else if (keyInput_boatType.equalsIgnoreCase("ROWINGBOAT")){
                 if(keyInput_boatPrice >= 27.5){
@@ -125,16 +133,7 @@ public class Main {
 
 
 
-//        Rental rental1 = new Rental(LocalDateTime.parse("2021-05-20T00:00:00"),
-//                22,
-//                boat1,
-//                customer1,
-//                LocalDateTime.parse("2021-05-20T13:15:00"),
-//                LocalDateTime.parse("2021-05-20T14:15:00"),
-//                true,
-//                false);
-
-
+//
 //        try {
 //            mainData = mapper.readValue(new File("c:\\Users\\zgoksu\\temp\\model.json"), Model.class);
 //            mainData.rentals.add(rental1);
@@ -142,11 +141,9 @@ public class Main {
 //            e.printStackTrace();
 //        }
 //
-//
 //        try {
 //            // Java object to JSON file
 //            mapper.writeValue(new File("c:\\Users\\zgoksu\\temp\\model.json"), mainData);
-//
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
@@ -205,15 +202,14 @@ private static void addBoat(){
 
 
     private static boolean authenticate (String userName, String password, Model model1){
+        boolean isAuthenticated = false;
         for (Employee employee : model1.employees) {
             if (employee.getUserName().equals(userName) && employee.getPassword().equals(password)) {
-                return true;
-            } else {
-                return false;
+                isAuthenticated = true;
             }
         }
-        return false;
-        //returnun false yada true donmesinin ne farki var?
+        return isAuthenticated;
+
     }
 }
 
