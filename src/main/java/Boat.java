@@ -1,27 +1,38 @@
-public class Boat {
+import java.util.Random;
 
-    private String boatId;
+public class Boat {
+    Random random = new Random();
+    private int boatId;
     private String boatType;
     private int seats;
-    private double price; // hourly price in euros
+    private double minimumPrice; // hourly price in euros
+    private int chargingTime;
 
-    public Boat(String boatId, String boatType, int seats, double price) {
-        this.boatId = boatId;
+
+    public Boat(String boatType, int seats, double minimumPrice) {
+        this.boatId = random.nextInt(100);
         this.boatType = boatType;
         this.seats = seats;
-        this.price = price;
+        this.minimumPrice = minimumPrice;
+    }
+
+
+
+    public Boat(String boatType, int seats, double minimumPrice, int chargingTime) {
+        this.boatId = random.nextInt(100);
+        this.boatType = boatType;
+        this.seats = seats;
+        this.minimumPrice = minimumPrice;
+        this.chargingTime = chargingTime;
     }
 
     public Boat() {
 
     }
 
-    public String getBoatId() {
-        return boatId;
-    }
 
-    public void setBoatId(String boatId) {
-        this.boatId = boatId;
+    public int getBoatId() {
+        return boatId;
     }
 
     public String getBoatType() {
@@ -40,21 +51,30 @@ public class Boat {
         this.seats = seats;
     }
 
-    public double getPrice() {
-        return price;
+    public double getMinimumPrice() {
+        return minimumPrice;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setMinimumPrice(double minimumPrice) {
+        this.minimumPrice = minimumPrice;
+    }
+
+    public int getChargingTime() {
+        return chargingTime;
+    }
+
+    public void setChargingTime(int chargingTime) {
+        this.chargingTime = chargingTime;
     }
 
     @Override
     public String toString() {
         return "Boat{" +
-                "boatId='" + boatId + '\'' +
+                "boatId=" + boatId +
                 ", boatType='" + boatType + '\'' +
                 ", seats=" + seats +
-                ", price=" + price +
+                ", minimumPrice=" + minimumPrice +
+                ", chargingTime=" + chargingTime +
                 '}';
     }
 }

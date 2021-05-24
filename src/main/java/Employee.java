@@ -1,15 +1,23 @@
-public class Employee {
+import java.util.Random;
 
+public class Employee {
+    private Random random = new Random();
+    private int employeeId;
     private String userName;
     private String password;
 
     public Employee( String userName, String password) {
+        this.employeeId = random.nextInt(50);
         this.userName = userName;
         this.password = password;
     }
 
     public Employee(){
 
+    }
+
+    public int getEmployeeId() {
+        return employeeId;
     }
 
 
@@ -32,7 +40,8 @@ public class Employee {
     @Override
     public String toString() {
         return "Employee{" +
-                "userName='" + userName + '\'' +
+                "employeeId=" + employeeId +
+                ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
