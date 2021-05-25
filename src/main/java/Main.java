@@ -14,13 +14,16 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Model model = new Model();
         Model mainData = new Model();
-        Boat boat2 = new Boat("KAJAK", 2, 30);
+        Boat boat2 = new Boat(10,"KAJAK", 2, 30);
 
 //        Employee employee1 = new Employee(1, "user01","123abc");
         Customer customer1 = new Customer("Smith", 6873434, "smith@smith.com", "kazernalaanstraat 101");
         Employee employee2 = new Employee("saif", "abc123");
         Rental rental1 = new Rental(LocalDateTime.of(2021,05,27, 10,00),boat2,customer1,
                 LocalTime.of(10,00), LocalTime.of(12,00),2,70,true,true);
+
+//Rental rental1 = new Rental(setDate("2021-05-27 10:10:10"),boat2,customer1,2,70,true,true);
+
 
 
         ObjectMapper mapper = new ObjectMapper();
@@ -56,6 +59,8 @@ public class Main {
                     System.out.println(boatIn);
                 }
                 System.out.println("To add new Boat to the system press A");
+                System.out.println("To delete a boat from the system press D");
+                System.out.println("To update a boat info press U");
                 input = scanner.nextLine();
         }
 
@@ -63,6 +68,9 @@ public class Main {
             int chargingTime = 0;
             int boatSeats = 0;
             double keyInput_boatPrice;
+            System.out.println("Please enter boat Id");
+            int keyInput_boatId = scanner.nextInt();
+            scanner.nextLine();
             System.out.println("Please enter boat type: ");
             String keyInput_boatType = scanner.nextLine();
             if(keyInput_boatType.equalsIgnoreCase("ELECTRICALBOAT")){
@@ -82,54 +90,90 @@ public class Main {
             keyInput_boatPrice = scanner.nextInt();
             scanner.nextLine();
             if (keyInput_boatType.equalsIgnoreCase("ELECTRICALBOAT")){
-               PRICE: if(keyInput_boatPrice < 35){
+                if(keyInput_boatPrice < 35){
                     while (keyInput_boatPrice < 35){
                         System.out.println("The renting price should be minimum 35: ");
                         keyInput_boatPrice = scanner.nextInt();
                         scanner.nextLine();
                     }
                 }
-            } else if (keyInput_boatType.equalsIgnoreCase("ROWINGBOAT")){
-                if(keyInput_boatPrice >= 27.5){
-                    keyInput_boatPrice = Double.parseDouble(scanner.next());
-                 }else{
-                    System.out.println("The renting price should be minimum 27.5: ");
-                    keyInput_boatPrice = scanner.nextInt();
+            } else if (keyInput_boatType.equalsIgnoreCase("ROWINGBOAT")) {
+                if (keyInput_boatPrice < 27.5) {
+                    while (keyInput_boatPrice < 27.5) {
+                        System.out.println("The renting price should be minimum 27.5: ");
+                        keyInput_boatPrice = scanner.nextInt();
+                        scanner.nextLine();
+                    }
                 }
-            if (keyInput_boatType.equalsIgnoreCase("KAJAK")) {
-                    if (keyInput_boatPrice >= 23) {
-                        keyInput_boatPrice = Double.parseDouble(scanner.next());
-                    } else{
-                        System.out.println("The renting price should be minimum 23: ");
-                        keyInput_boatPrice = scanner.nextInt();                    }
-            }
-            if (keyInput_boatType.equalsIgnoreCase("SUPBOARD")) {
-                    if (keyInput_boatPrice >= 17.5) {
-                        keyInput_boatPrice = Double.parseDouble(scanner.next());
-                } else{
-                        System.out.println("The renting price should be minimum 17.5: ");
-                        double newPrice = scanner.nextInt();
-                        keyInput_boatPrice = newPrice;
+            } else if (keyInput_boatType.equalsIgnoreCase("KAJAK")) {
+                    if(keyInput_boatPrice < 23){
+                        while (keyInput_boatPrice < 23){
+                            System.out.println("The renting price should be minimum 23: ");
+                            keyInput_boatPrice = scanner.nextInt();
+                            scanner.nextLine();
+                        }
                     }
             }
+            else if (keyInput_boatType.equalsIgnoreCase("SUPBOARD")) {
+                    if(keyInput_boatPrice < 17.5){
+                        while (keyInput_boatPrice < 17.5){
+                            System.out.println("The renting price should be minimum 17.5: ");
+                            keyInput_boatPrice = scanner.nextInt();
+                            scanner.nextLine();
+                        }
+                    }
             }
+            Boat boat1 = new Boat(keyInput_boatId,keyInput_boatType, boatSeats, keyInput_boatPrice, chargingTime);
             System.out.println("A new Boat is added successfully.");
-            Boat boat1 = new Boat(keyInput_boatType, boatSeats, keyInput_boatPrice, chargingTime);
+
 
             try {
-            mainData = mapper.readValue(new File("c:\\Users\\zgoksu\\temp\\model.json"), Model.class);
-            mainData.boats.add(boat1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
+                mainData = mapper.readValue(new File("c:\\Users\\zgoksu\\temp\\model.json"), Model.class);
+                mainData.boats.add(boat1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                // Java object to JSON file
+                mapper.writeValue(new File("c:\\Users\\zgoksu\\temp\\model.json"), mainData);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if (input.equalsIgnoreCase("D")){
+            // code to delete a boat
+            System.out.println("Please enter the Id of the boat you want to delete:");
+            int boatId = scanner.nextInt();
+
+            for (Boat boatIn : mainData.boats){
+                if(boatId == boatIn.getBoatId()){
+                    mainData.boats.remove(boatIn);
+                    System.out.println("The boat with id:" + boatId + " has been deleted");
+                    break;
+                }
+
+            }
             // Java object to JSON file
             mapper.writeValue(new File("c:\\Users\\zgoksu\\temp\\model.json"), mainData);
 
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        } else if(input.equalsIgnoreCase("U")){
+            System.out.println("Please enter the Id of the boat you want to update:");
+            int boatId = scanner.nextInt();
+            for (Boat boatIn : mainData.boats){
+                if(boatId == boatIn.getBoatId()){
+                    double newPrice =scanner.nextInt();
+                    boatIn.setMinimumPrice(newPrice);
+                    System.out.println("The boat with id: " + boatId + " has been updated");
+                    break;
+                }
+            }
+            // Java object to JSON file
+            mapper.writeValue(new File("c:\\Users\\zgoksu\\temp\\model.json"), mainData);
+
         }
-        }
+
+            }
 
 
 
@@ -148,57 +192,14 @@ public class Main {
 //            e.printStackTrace();
 //        }
 
-    }
-
-    private static String setDate(String date) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-        String strDate = dateFormat.format(date);
-        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd MM yyyy");
-        return date;
-    }
 
 
-//        try{
-//            Model model1 = mapper.readValue(new File("c:\\Users\\zgoksu\\temp\\model.json"), Model.class);
-//            for(Customer customer : model1.customers){
-//                System.out.println(customer);
-//            }
-//        } catch (IOException e){
-//            e.printStackTrace();
-//        }
-
-//        try {
-//            // Java object to JSON file
-//            mapper.writeValue(new File("c:\\Users\\zgoksu\\temp\\model.json"), model);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-
-//print employees
-//        try{
-//            Model model1 = mapper.readValue(new File("c:\\Users\\zgoksu\\temp\\model.json"), Model.class);
-//            for(Employee employeesIn : model1.employees){
-//                System.out.println(employeesIn);
-//            }
-//        } catch (IOException e){
-//            e.printStackTrace();
-//        }
-
-
-    //        // prints customers
-//        try{
-//            Model model1 = mapper.readValue(new File("c:\\Users\\zgoksu\\temp\\model.json"), Model.class);
-//            for(Customer customerIn : model1.customers){
-//                System.out.println(customerIn);
-//            }
-//        } catch (IOException e){
-//            e.printStackTrace();
-//        }
-
-private static void addBoat(){
-
-}
+//    private static String setDate(String date) {
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+//        String strDate = dateFormat.format(date);
+//        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd MM yyyy");
+//        return date;
+//    }
 
 
     private static boolean authenticate (String userName, String password, Model model1){

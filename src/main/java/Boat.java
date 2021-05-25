@@ -1,7 +1,6 @@
 import java.util.Random;
 
 public class Boat {
-    Random random = new Random();
     private int boatId;
     private String boatType;
     private int seats;
@@ -9,8 +8,8 @@ public class Boat {
     private int chargingTime;
 
 
-    public Boat(String boatType, int seats, double minimumPrice) {
-        this.boatId = random.nextInt(100);
+    public Boat(int boatId, String boatType, int seats, double minimumPrice) {
+        this.boatId = boatId;
         this.boatType = boatType;
         this.seats = seats;
         this.minimumPrice = minimumPrice;
@@ -18,8 +17,8 @@ public class Boat {
 
 
 
-    public Boat(String boatType, int seats, double minimumPrice, int chargingTime) {
-        this.boatId = random.nextInt(100);
+    public Boat(int boatId, String boatType, int seats, double minimumPrice, int chargingTime) {
+        this.boatId = boatId;
         this.boatType = boatType;
         this.seats = seats;
         this.minimumPrice = minimumPrice;
@@ -30,6 +29,9 @@ public class Boat {
 
     }
 
+    public void setBoatId(int boatId) {
+        this.boatId = boatId;
+    }
 
     public int getBoatId() {
         return boatId;

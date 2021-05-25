@@ -35,6 +35,10 @@ public class Rental {
 
     }
 
+    public Rental(String setDate, Boat boat2, Customer customer1, int i, int i1, boolean b, boolean b1) {
+
+    }
+
     public int getRentalId() {
         return rentalId;
     }
@@ -44,12 +48,16 @@ public class Rental {
     }
 
     public void setDate(LocalDateTime date) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-        String strDate = dateFormat.format(date);
-        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd MM yyyy");
-        this.date = LocalDateTime.parse(strDate, f);
         this.date = date;
     }
+
+    //    public void setDate(LocalDateTime date) {
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+//        String strDate = dateFormat.format(date);
+//        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd MM yyyy");
+//        this.date = LocalDateTime.parse(strDate, f);
+//        this.date = date;
+//    }
 
     public Boat getBoat() {
         return boat;
